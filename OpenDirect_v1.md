@@ -38,7 +38,7 @@ For details about the programming elements that this specification defines, see 
 
 |    |       |
 |----|-------|
-| Resources | Defines the resource objects. For a diagram that shows the resource relationships, see Resource Model. |
+| [Resources](#resources) | Defines the resource objects. For a diagram that shows the resource relationships, see Resource Model. |
 | Common Objects | Defines the objects used by one or more resource. |
 | Reference Data  | Defines the reference data objects and possible values. Reference data provides enumerated values for a resource property. |
 | Collection Objects | Defines the collection objects that GET calls return. |
@@ -49,32 +49,34 @@ For details about the programming elements that this specification defines, see 
 | Reporting | Defines the reporting URIs and objects. |
 | Workflow | Outlines the calls required to create an order. |
 
+---
+
 ##Resources
 The OpenDirect API is a RESTful API that supports JSON. This section defines the JSON resource objects used by the API. For a diagram that shows the relationships between these resources, see Resource Model.
 
 For a list of URIs that use these resources, see URIs.
 
 ###Account
-Defines an Account resource. An Account associates an advertiser with a buyer. A buyer is typically an agency but may also be the advertiser. A buyer may be associated with one or more advertisers and an advertiser may be associated with one or more buyers. 
+Defines an Account resource. An Account associates an advertiser with a buyer. A buyer is typically an agency but may also be the advertiser. A buyer may be associated with one or more advertisers and an advertiser may be associated with one or more buyers.
 
-Before an agency may create accounts and perform buys on behalf of the advertiser, the advertiser must give permissions to the agency. The process of giving or removing permissions is publisher defined. Creating an account must fail if the advertiser has not given the agency permissions. 
+Before an agency may create accounts and perform buys on behalf of the advertiser, the advertiser must give permissions to the agency. The process of giving or removing permissions is publisher defined. Creating an account must fail if the advertiser has not given the agency permissions.
 
 The Account owns the orders and creatives.
 
 | Property     | Type   | Constraints                  | Add       | Update    | Publisher Requirement | Description                                                                                                                                                                                                                                                                                                                                          |
 |--------------|--------|------------------------------|-----------|-----------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | AdvertiserId | String | Maximum of 36 characters.    | Required  | Read-only | Must support          | An ID that identifies the organization that is acting as the advertiser.                                                                                                                                                                                                                                                                             |
-| BuyerId      | String | Maximum of 36 characters.    | Required  | Read-only | Must support          | An ID that identifies the organization that is acting as the buyer. If the advertiser is performing their own buys, AdvertiserId and BuyerId must be the same.                                                                                                                                                                                      
+| BuyerId      | String | Maximum of 36 characters.    | Required  | Read-only | Must support          | An ID that identifies the organization that is acting as the buyer. If the advertiser is performing their own buys, AdvertiserId and BuyerId must be the same.
 | Id           | String | Maximum of 36 characters.    | Read-only | Read-only | Must support          | A system-generated opaque ID that uniquely identifies this resource.                                                                                                                                                                                                                                                                                 |
 | Name         | String | Maximum of 255 characters    | Required  | Optional  | Must support          | The name of the account. Used for display purposes.                                                                                                                                                                                                                                                                                                  |
 | ProviderData | String | Maximum of 1,000 characters. | Optional  | Optional  | May support           | An opaque blob of provider-defined data. Providers may use this field as needed (for example, to store an ID that correlates this object with resources within their system). Note that any provider that edits this object may override the data in this field. The data should include a marker that you can identify to ensure the data is yours. |
 
-Notes: A organization may organize accounts by brand, subsidiaries, divisions, or anything else that supports their model. 
+Notes: A organization may organize accounts by brand, subsidiaries, divisions, or anything else that supports their model.
 
 ###Assignment
 Defines an Assignment resource. An Assignment associates a creative with a line of the order.
 
-A creative may be assigned to one or more lines and a line may be assigned one or more creatives. 
+A creative may be assigned to one or more lines and a line may be assigned one or more creatives.
 
 | Property     | Type   | Constraints                       | Add       | Update    | Publisher Requirement | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |--------------|--------|-----------------------------------|-----------|-----------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -87,7 +89,7 @@ A creative may be assigned to one or more lines and a line may be assigned one o
 
 Notes: The assignment must fail if the following are true.
 
-  - The language of the creative does not match the language of the product (the line identifies the product). 
+  - The language of the creative does not match the language of the product (the line identifies the product).
   - The specified maturity level of the creative does not match the maturity level of the product specified by the line.
 
 A creative must be assigned to a line before the line may be booked.
@@ -97,7 +99,7 @@ To change the creative assigned to a line, first assign a new creative to the li
 To display different creatives at different times, add a line for each creative. If weighting is used, providers should indicate in the user interface whether all assignments for a line specify a weight and that the sum of all weights is 100.
 
 ###Creative
-Defines a Creative resource. The Creative provides information about an ad. 
+Defines a Creative resource. The Creative provides information about an ad.
 
 To assign a creative to a line, see Assignment.
 
@@ -149,7 +151,7 @@ For information about assigning creatives to a line, see Assignment.
 | UsesExpandables    | Boolean   |                             | Optional  | Optional  | Should support        | A Boolean value that indicates whether the line will be,assigned expandable creatives. Used to determine availability.,The default is false.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ###Order
-Defines an Order resource. The Order specifies the plan’s start and end dates, estimated budget, currency, and preferred billing method. 
+Defines an Order resource. The Order specifies the plan’s start and end dates, estimated budget, currency, and preferred billing method.
 
 To specify the details of the order, use the Line resource.
 
@@ -169,7 +171,7 @@ To specify the details of the order, use the Line resource.
 | StartDate              | String    | Maximum of 26 characters.                                                          | Optional  | Optional  | Should support        |                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ###Organization
-Defines an organization resource. The organization resource may represent an advertiser or agency (buyer). The Account determines the role that the organization plays. The organization’s role may vary by account. For example, the organization may be an advertiser in one account and a buyer in another. 
+Defines an organization resource. The organization resource may represent an advertiser or agency (buyer). The Account determines the role that the organization plays. The organization’s role may vary by account. For example, the organization may be an advertiser in one account and a buyer in another.
 
 | Property          | Type      | Constraints                                                                                                          | Add       | Update    | Publisher Requirement | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 |-------------------|-----------|----------------------------------------------------------------------------------------------------------------------|-----------|-----------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -188,7 +190,7 @@ Defines an organization resource. The organization resource may represent an adv
 Notes: An advertiser may create one or more organizations to meet their business needs. For example, they may create a single organization and then create accounts for each brand, subsidiary, or division. Or, they may create an organization for each brand. It is up to the advertiser to determine how they use Organization and Account to meet their organizational needs.
 
 ###Product
-Defines a Product resource. A Product identifies anything from an ad placement to a Run of Network product in the publisher’s product catalog. 
+Defines a Product resource. A Product identifies anything from an ad placement to a Run of Network product in the publisher’s product catalog.
 
 | Property                 | Type     | Constraints                                                                                   | Publisher Requirement | Description                                                                                                                                                  |
 |--------------------------|----------|-----------------------------------------------------------------------------------------------|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -239,7 +241,7 @@ Defines a postal address.
 | State        | String | Maximum of 35 alpha characters.  Cannot be an empty string.                                     | Optional | Optional | Must support          | The state or province.          |
 
 ###Contact
-Defines an agency or advertiser contact. 
+Defines an agency or advertiser contact.
 
 | Property  | Type    | Constraints                                                   | Add      | Update    | Publisher Requirement | Description                                                                                                                           |
 |-----------|---------|---------------------------------------------------------------|----------|-----------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -254,7 +256,7 @@ Defines an agency or advertiser contact.
 | Type      | String  | Maximum of 10 characters.<br> The string is case insensitive. | Required | Read-only | Must support          | The type of contact that this resource represents. For a list of possible values see ContactType.                                     |
 
 ###ProductAvails
-Defines the availability and pricing information that a product availability search request returns. 
+Defines the availability and pricing information that a product availability search request returns.
 
 | Property     | Type    | Publisher Requirement | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 |--------------|---------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -264,7 +266,7 @@ Defines the availability and pricing information that a product availability sea
 | Price        | Decimal | Must support          | The product’s price per unit. The product’s rate type determines the unit. For example, if RateType is CPM, the price is per 1,000 impressions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ###ProductAvailsSearch
-Defines the search criteria used to search for product availability and pricing information. 
+Defines the search criteria used to search for product availability and pricing information.
 
 | Property          | Type      | Publisher Requirement | Description                                                                                                                                                                                                                                      |
 |-------------------|-----------|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -278,7 +280,7 @@ Defines the search criteria used to search for product availability and pricing 
 | Targeting         | Segment[] | Should support        | The segments to target. For example, behavioral, age, and gender segments.                                                                                                                                                                       |
 
 ###ProductSearch
-Defines the search criteria used to search the product catalog. 
+Defines the search criteria used to search the product catalog.
 
 | Property      | Type     | Publisher Requirement | Description                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |---------------|----------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -294,7 +296,7 @@ Note that product selection uses a logical AND between fields and a logical OR b
 At least one field must be specified.
 
 ###Size
-Defines the geometry of a creative. 
+Defines the geometry of a creative.
 
 | Property | Type  | Constraints | Add      | Update   | Publisher Requirement | Description                           |
 |----------|-------|-------------|----------|----------|-----------------------|---------------------------------------|
@@ -311,7 +313,7 @@ Defines the target and target values used to search for product availability and
 
 The values for these fields come from the Target and TargetValue reference data.
 
-##Reference Data 
+##Reference Data
 This section defines the reference data that an OpenDirect API must support. Reference data provides enumerated values for a resource property. The publisher must return only those values that they support.
 
 ###AdFormatType
@@ -322,8 +324,8 @@ Defines the possible ad formats.
 | Id       | String | A system-generated opaque ID that uniquely identifies this resource. <br>The ID may contain a maximum of 36 characters. |
 | Name     | String | The ad format’s display name.                                                                                       |
 
-The API may support all or a subset of the following ad formats. 
- 
+The API may support all or a subset of the following ad formats.
+
   - Flash
   - FlashExpandable
   - Image
@@ -343,7 +345,7 @@ Defines the possible ad positions on a web page.
 | Id       | String | A system-generated opaque ID that uniquely identifies this resource. <br>The ID may contain a maximum of 36 characters. |
 | Name     | String | The ad position’s display name.                                                                                     |
 
-The API may support all or a subset of the following ad positions. 
+The API may support all or a subset of the following ad positions.
 
   - AboveFold—Ad placements that are visible without scrolling.
   - BelowFold—Ad placements that are visible only if the user scrolls down the page.
@@ -399,14 +401,14 @@ The API may support all or a subset of the following formats.
 
 ###FrequencyCapInterval
 
-Defines the frequency cap intervals that the API supports. 
+Defines the frequency cap intervals that the API supports.
 
 | Property | Type   | Description                                                   |
 |----------|--------|---------------------------------------------------------------|
 | Id       | String | A system-generated ID that uniquely identifies this resource. |
 | Name     | String | The name of the interval.                                     |
 
-The frequency interval specifies the units in which the frequency count is expressed. For example, if a line’s frequency count is 2 and interval is Day, display the ad to the same user a maximum of 2 times in the same calendar day. 
+The frequency interval specifies the units in which the frequency count is expressed. For example, if a line’s frequency count is 2 and interval is Day, display the ad to the same user a maximum of 2 times in the same calendar day.
 
 The API may support all or a subset of the following intervals.
 
@@ -418,7 +420,7 @@ The API may support all or a subset of the following intervals.
 
 ###Industry
 
-Defines an industry that the advertiser belongs to. 
+Defines an industry that the advertiser belongs to.
 
 | Property      | Type       | Description                                                                        |
 |---------------|------------|------------------------------------------------------------------------------------|
@@ -832,7 +834,7 @@ The API may support all or a subset of the following industries:
 
 ###InventoryType
 
-Defines a list of devices that the product may serve on. 
+Defines a list of devices that the product may serve on.
 
 | Property | Type   | Description                                                                                                              |
 |----------|--------|--------------------------------------------------------------------------------------------------------------------------|
@@ -856,9 +858,9 @@ Defines a language that the API supports.
 
 The API may support all or a subset of the languages specified in ISO 639-1.
 
-###MaturityLevel 
+###MaturityLevel
 
-Defines a list of maturity levels. 
+Defines a list of maturity levels.
 
 | Property | Type   | Description                                                                                                              |
 |----------|--------|--------------------------------------------------------------------------------------------------------------------------|
@@ -873,7 +875,7 @@ The API may support all or a subset of the following values.
 
 ###RateType
 
-Defines a unit of measure that a cost (i.e. BasePrice) is expressed in. 
+Defines a unit of measure that a cost (i.e. BasePrice) is expressed in.
 
 | Property | Type   | Description                                                                                                              |
 |----------|--------|--------------------------------------------------------------------------------------------------------------------------|
@@ -910,7 +912,7 @@ The API must support the following target categories and may support additional 
 
 ###TargetValue
 
-Defines a target value. 
+Defines a target value.
 
 | Property | Type   | Description                                                                           |
 |----------|--------|---------------------------------------------------------------------------------------|
@@ -947,7 +949,7 @@ The API must support the following values per target category:
 
 ##Collection Objects
 
-For GET calls that return a collection of resources, such as /accounts/{id}/orders, the response must be an object that contains an array of the requested resources. The array must be named according to the type of resource it contains. The following table identifies the property name that must be used for each collection call. 
+For GET calls that return a collection of resources, such as /accounts/{id}/orders, the response must be an object that contains an array of the requested resources. The array must be named according to the type of resource it contains. The following table identifies the property name that must be used for each collection call.
 
 | Call                                                                      | Property Name | Resource      |
 |---------------------------------------------------------------------------|---------------|---------------|
@@ -963,20 +965,20 @@ For GET calls that return a collection of resources, such as /accounts/{id}/orde
 The following shows an example response for /accounts.
 
 ```json
-{ 
-	"accounts": [ 
-		{ 
-			"advertiserId": “B7EBC7F3-FBB3-4250-99F1-8D001088434B”, 
-			"agencyId": "4AA837B7-1A27-421E-9DDD-CAEF1AE884B5", 
-			"id": “9B0878BE-7254-49BE-AFD4-B0A67C7C3D26”, 
-		}, 
-		{ 
-			"advertiserId": “16B55667-37CF-4447-A79D-88E6DAC4D7C2”, 
-			"agencyId": "4AA837B7-1A27-421E-9DDD-CAEF1AE884B5", 
-			"id": “EAC93F5D-F448-44D6-8333-4E530D14C9DA”, 
-		}, 
-	] 
-} 
+{
+	"accounts": [
+		{
+			"advertiserId": “B7EBC7F3-FBB3-4250-99F1-8D001088434B”,
+			"agencyId": "4AA837B7-1A27-421E-9DDD-CAEF1AE884B5",
+			"id": “9B0878BE-7254-49BE-AFD4-B0A67C7C3D26”,
+		},
+		{
+			"advertiserId": “16B55667-37CF-4447-A79D-88E6DAC4D7C2”,
+			"agencyId": "4AA837B7-1A27-421E-9DDD-CAEF1AE884B5",
+			"id": “EAC93F5D-F448-44D6-8333-4E530D14C9DA”,
+		},
+	]
+}
 ```
 
 The collection object may include additional publisher-defined properties.
@@ -988,11 +990,11 @@ Publishers must support authenticating advertiser and agency users. Publishers m
 
 Each request must include an AccessToken header that is set to the user’s access token. If the token is not valid, the request must fail with HTTP status code 401 Unauthorized.
 
-##Versioning 
+##Versioning
 
 Versioning occurs at the API level and is URI based. All services that make up the API must use the same version number. The version may fall anywhere in the path before the resource and must have the form vn, where n is a positive integer. For example, in the URI https://<host>/api/v1/accounts/{id}, v1 indicates version 1 of the API.
 
-##HTTP Error Codes/Error Handling 
+##HTTP Error Codes/Error Handling
 
 The publisher must support the following HTTP status codes.
 
@@ -1026,34 +1028,34 @@ If the request generates a 400 Bad Request status code, the response must contai
 The following shows the body of an example error response.
 
 ```json
-{ 
-	"errors": [ 
-		{ 
-		"context": {“logId”:”123abc”}, 
-		"message": "The requested impressions are not available.", 
-		"errorCode": “ImpressionsNotAvailable”, 
-			"link": "https:\\<host>\help\impressions.aspx” 
-		}, 
-		{ 
-		"context": {}, 
-		"message": "", 	
-		"errorCode": “”, 
-		"link": "" 
-		}, 
-	] 
-} 
+{
+	"errors": [
+		{
+		"context": {“logId”:”123abc”},
+		"message": "The requested impressions are not available.",
+		"errorCode": “ImpressionsNotAvailable”,
+		"link": "https:\\<host>\help\impressions.aspx”
+		},
+		{
+		"context": {},
+		"message": "",
+		"errorCode": “”,
+		"link": ""
+		},
+	]
+}
 ```
 
-##Data Format 
+##Data Format
 
 Supported mime type: application/json
 
-##General Request/Response Rules 
+##General Request/Response Rules
 
-If the following is true, the response must not include the property. 
+If the following is true, the response must not include the property.
 
   - The value is NULL
-  - There is no default value 
+  - There is no default value
   - Its type is numeric or string
 
 However, if the property is an array of any type and is NULL, the response must include the property and it must be set to an empty array.
@@ -1116,7 +1118,7 @@ The following describes the possible URIs for each resource. For information abo
 
 #####Description
 
-Gets a list of Organizations that the user has access to. 
+Gets a list of Organizations that the user has access to.
 
 #####Rules
 
@@ -1312,7 +1314,7 @@ Content-Length: 1879'
 }
 ```
 
-####/organizations?$filter= 
+####/organizations?$filter=
 
 #####Description
 
@@ -1326,15 +1328,15 @@ Content-Length: 1879'
 
 #####Description
 
-Adds an Account or gets a list of accounts that the user has access to. 
+Adds an Account or gets a list of accounts that the user has access to.
 
 #####Rules
 
-An advertiser or agency may add accounts to only the organization they own; an agency may not add accounts to an advertiser’s organization. If an advertiser wants an agency to manage an account on their behalf, the advertiser must add the account and set the account’s buyerId to the agency’s organization ID. 
+An advertiser or agency may add accounts to only the organization they own; an agency may not add accounts to an advertiser’s organization. If an advertiser wants an agency to manage an account on their behalf, the advertiser must add the account and set the account’s buyerId to the agency’s organization ID.
 
 An organization may add as many accounts as needed to create a buying structure that supports their needs. For example, the organization may create a single account, an account for each region, an account for each brand, and so on.
 
-For an advertiser, the list of accounts will include only accounts that they own. However, for an agency, the list of accounts will include the accounts that they own and the accounts that they manage on behalf of advertisers. 
+For an advertiser, the list of accounts will include only accounts that they own. However, for an agency, the list of accounts will include the accounts that they own and the accounts that they manage on behalf of advertisers.
 
 #####Example POST Request
 
@@ -1411,7 +1413,7 @@ Gets the specified Account.
 
 #####Rules
 
-The user must have permissions to perform the requested action. For example, advertisers and agencies may get the accounts that they own. In addition, an agency may get the accounts that they manage on behalf of advertisers. 
+The user must have permissions to perform the requested action. For example, advertisers and agencies may get the accounts that they own. In addition, an agency may get the accounts that they manage on behalf of advertisers.
 
 #####Example GET Request
 
@@ -1436,7 +1438,7 @@ Content-Length: 187
 }
 ````
 
-####/accounts?$filter= 
+####/accounts?$filter=
 
 #####Description
 
@@ -1450,13 +1452,13 @@ Content-Length: 187
 
 #####Description
 
-Adds an Assignment or gets a list of assignments that the user has access to. 
+Adds an Assignment or gets a list of assignments that the user has access to.
 
 #####Rules
 
 An advertiser or agency may add assignments to accounts that they own. In addition; an agency may add assignments to accounts that they manage on behalf of advertisers.
 
-For advertisers, the list will include only assignments that they own. For agencies, the list will include the assignments that they own and the assignments that belong to accounts that they manage on behalf of advertisers. 
+For advertisers, the list will include only assignments that they own. For agencies, the list will include the assignments that they own and the assignments that belong to accounts that they manage on behalf of advertisers.
 
 #####Example POST Request
 
@@ -1595,7 +1597,7 @@ Content-Length: 108
 }
 ```
 
-####/tenants/{id}/accounts/{id}/assignments/{id}?disable 
+####/tenants/{id}/accounts/{id}/assignments/{id}?disable
 
 #####Description
 
@@ -1685,13 +1687,13 @@ Content-Length: 108
 
 #####Description
 
-Adds a Creative or gets a list of creatives that the user has access to. 
+Adds a Creative or gets a list of creatives that the user has access to.
 
 #####Rules
 
 An advertiser or agency may add creatives to accounts that they own. In addition; an agency may add creatives to accounts that they manage on behalf of advertisers.
 
-For advertisers, the list will include only creatives that they own. For agencies, the list will include the creatives that they own and the creatives that belong to accounts that they manage on behalf of advertisers. 
+For advertisers, the list will include only creatives that they own. For agencies, the list will include the creatives that they own and the creatives that belong to accounts that they manage on behalf of advertisers.
 
 #####Example POST Request
 
@@ -1779,7 +1781,7 @@ Content-Length: 187
 }
 ```
 
-####/accounts/{id}/creatives/{id} 
+####/accounts/{id}/creatives/{id}
 
 #####Description
 
@@ -1874,13 +1876,13 @@ Content-Length: 308
 
 #####Description
 
-Adds an Order or gets a list of orders that the user has access to. 
+Adds an Order or gets a list of orders that the user has access to.
 
 #####Rules
 
 An advertiser or agency may add orders to accounts that they own. In addition; an agency may add orders to accounts that they manage on behalf of advertisers.
 
-For advertisers, the list will include only orders that they own. For agencies, the list will include the orders that they own and the orders that belong to accounts that they manage on behalf of advertisers. 
+For advertisers, the list will include only orders that they own. For agencies, the list will include the orders that they own and the orders that belong to accounts that they manage on behalf of advertisers.
 
 #####Example POST Request
 
@@ -1956,7 +1958,7 @@ Content-Length: 187
 }
 ```
 
-####/accounts/{id}/orders/{id} 
+####/accounts/{id}/orders/{id}
 
 #####Description
 
@@ -2012,7 +2014,7 @@ AccessToken: `<OAuth token>`
 
 #####Example PATCH Response
 
-HTTP/1.1 200 OK 
+HTTP/1.1 200 OK
 Content-Type: application/json
 Content-Length: 358
 
@@ -2045,13 +2047,13 @@ Content-Length: 358
 
 #####Description
 
-Adds a Line to an order or gets a list of lines that the user has access to. 
+Adds a Line to an order or gets a list of lines that the user has access to.
 
 #####Rules
 
 An advertiser or agency may add lines to orders that they own. In addition; an agency may add lines to orders that they manage on behalf of advertisers.
 
-For advertisers, the list will include only lines that they own. For agencies, the list will include the lines that they own and the lines that belong to accounts that they manage on behalf of advertisers. 
+For advertisers, the list will include only lines that they own. For agencies, the list will include the lines that they own and the lines that belong to accounts that they manage on behalf of advertisers.
 
 #####Example POST Request
 
@@ -2080,7 +2082,7 @@ AccessToken: `<OAuth token>`
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
 }
 ```
 
@@ -2115,7 +2117,7 @@ Content-Length: 878
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2161,7 +2163,7 @@ Content-Length: 587
           "target":"Gender",
           "targetValues":["Male"]
         }
-      ] 
+      ]
       "usesExpandables":0
     }
   ]
@@ -2216,7 +2218,7 @@ Content-Length: 158
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2262,7 +2264,7 @@ Content-Length: 458
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2281,7 +2283,7 @@ Content-Length: 458
 
 #####Description
 
-Books the line. 
+Books the line.
 
 #####Rules
 
@@ -2330,7 +2332,7 @@ Content-Length: 458
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2387,7 +2389,7 @@ Content-Length: 458
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2396,7 +2398,7 @@ Content-Length: 458
 
 #####Description
 
-Cancels the line. 
+Cancels the line.
 
 #####Rules
 
@@ -2441,7 +2443,7 @@ Content-Length: 658
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2450,7 +2452,7 @@ Content-Length: 658
 
 #####Description
 
-Moves the line back to the Draft state. 
+Moves the line back to the Draft state.
 
 #####Rules
 
@@ -2493,7 +2495,7 @@ Content-Length: 458
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
   "usesExpandables":0
 }
 ```
@@ -2502,7 +2504,7 @@ Content-Length: 458
 
 #####Description
 
-Gets the list of Products from the product catalog. 
+Gets the list of Products from the product catalog.
 
 #####Rules
 
@@ -2561,7 +2563,7 @@ Content-Length: 5899
 
 #####Description
 
-Gets the specified Product from the product catalog. 
+Gets the specified Product from the product catalog.
 
 #####Rules
 
@@ -2612,11 +2614,11 @@ Content-Length: 5899
 }
 ```
 
-####/tenants/{id}/products/search 
+####/tenants/{id}/products/search
 
 #####Description
 
-Gets a list of Products from the product catalog that matches the specified filter criteria (see ProductSearch). 
+Gets a list of Products from the product catalog that matches the specified filter criteria (see ProductSearch).
 
 #####Rules
 
@@ -2689,7 +2691,7 @@ Content-Length: 5899
 
 #####Description
 
-Gets pricing and avails information (see ProductAvails) for the specified products (see ProductAvailsSearch). 
+Gets pricing and avails information (see ProductAvails) for the specified products (see ProductAvailsSearch).
 
 #####Rules
 
@@ -2720,7 +2722,7 @@ AccessToken: `<OAuth token>`
       "target":"Gender",
       "targetValues":["Male"]
     }
-  ] 
+  ]
 }
 ```
 
@@ -2743,9 +2745,9 @@ Content-Length: 5899
 }
 ```
 
-##Reporting 
+##Reporting
 
-Reporting occurs at the line level. The publisher must support the following GET calls to generate a click and impression report. 
+Reporting occurs at the line level. The publisher must support the following GET calls to generate a click and impression report.
 
 | URI                                         | Description                                                       |
 |---------------------------------------------|-------------------------------------------------------------------|
@@ -2767,7 +2769,7 @@ The following describes the calls that a client would make to get product avails
 
 ####Onboarding a Provider
 
-A provider is a partner who writes the client that agencies and advertisers use to buy premium guaranteed ad inventory from the publisher. Onboarding the provider is a manual process that is publisher dependent. 
+A provider is a partner who writes the client that agencies and advertisers use to buy premium guaranteed ad inventory from the publisher. Onboarding the provider is a manual process that is publisher dependent.
 
 ####Adding an Agency Organization
 
@@ -2791,9 +2793,9 @@ For repeat or long term access, use the authorization code grant flow. The authe
 
 An advertiser may create one or more accounts based on how they organize their buys. For example, they could create accounts for each brand, subsidiary, or division. The account identifies the advertiser and buyer. If the advertiser performs their own buys, the account would identify them as the advertiser and buyer.
 
-If the advertiser grants an agency permission to perform buys on their behalf, the account would identify the agency as the buyer. The agency must have permissions to create accounts and perform buys on behalf of the advertiser. The process of granting an agency permission to manage an advertiser’s accounts is publisher defined. 
+If the advertiser grants an agency permission to perform buys on their behalf, the account would identify the agency as the buyer. The agency must have permissions to create accounts and perform buys on behalf of the advertiser. The process of granting an agency permission to manage an advertiser’s accounts is publisher defined.
 
-In addition to defining the relationship between the advertiser and buyer, an account also owns orders and creatives. 
+In addition to defining the relationship between the advertiser and buyer, an account also owns orders and creatives.
 
 To create an account, POST a request to /accounts. The body of the request is an Account resource object. The Account object contains the buyer’s ID and the advertiser’s ID. The response includes the Location header that contains the URI to the new account.
 
@@ -2804,12 +2806,12 @@ The following provides several options for getting product inventory details. Ty
   - To get a product catalog to display to the user, send a GET request to /products. The response includes a collection object that contains an array of Product objects. The Product object contains the product’s base rate and estimated daily impressions (for example, hundreds of thousands). Providers should not use the avails search method (option 3) to determine estimated avails.
   - To get a specific product from the catalog, send a GET request to /products/{id}. The response contains a Product object.
   - To search the product catalog, send a POST request to /products/search. The body of the request is a ProductSearch object that contains the search criteria. For example, the client may search the catalog for products that use a specific ad format. The response includes a collection object that contains an array Product objects that match the search criteria. If no products match the search criteria, the array is empty.
-  - To get product availability and pricing information for specific products, send a POST request to /products/avails. You should make this call only to determine actual availability just before adding and booking a line; you should not use this call to present availability as part of a product catalog. 
-  - The body of the request is a ProductAvailsSearch object. The client must specify a date range, quantity, list of product IDs and may optionally specify frequency and targeting information. To get custom rates and availability for an advertiser, include the account ID, which identifies the advertiser and agency. 
+  - To get product availability and pricing information for specific products, send a POST request to /products/avails. You should make this call only to determine actual availability just before adding and booking a line; you should not use this call to present availability as part of a product catalog.
+  - The body of the request is a ProductAvailsSearch object. The client must specify a date range, quantity, list of product IDs and may optionally specify frequency and targeting information. To get custom rates and availability for an advertiser, include the account ID, which identifies the advertiser and agency.
 
 The response includes a collection object that contains an array of ProductAvails objects. Each ProductAvails object contains the available quantity and pricing information for a product. The number of available impressions returned will be either the specified quantity, if the requested quantity is available, or less if there is fewer quantity available.
 
-Note that the caller should not use this call to determine the maximum available impressions. Instead, they should use /products or /products/search which returns the estimated daily availability and base pricing details. If they use the avails search for product catalog purposes, they will likely display inaccurate pricing information to the user. For example, the pricing for 500,000,000 impressions may be less than the pricing for 100,000 impressions, which may lead the user to mistakenly believe that they’re getting the impressions for  5.00 CPM instead of 15.00 CPM. 
+Note that the caller should not use this call to determine the maximum available impressions. Instead, they should use /products or /products/search which returns the estimated daily availability and base pricing details. If they use the avails search for product catalog purposes, they will likely display inaccurate pricing information to the user. For example, the pricing for 500,000,000 impressions may be less than the pricing for 100,000 impressions, which may lead the user to mistakenly believe that they’re getting the impressions for  5.00 CPM instead of 15.00 CPM.
 
 ####Creating an Order
 
@@ -2817,19 +2819,19 @@ An order is the parent container for lines. To add an order, send a POST request
 
 ####Adding Lines to the Order
 
-A line specifies the ad product to book, quantity, targeting details, and a date range of when the line runs. To add a line to the order, send a POST request to /accounts/{id}/orders/{id}/lines. The body of the request is a Line resource object. Typically, the client should specify the same details on the line that were used to search for product availability. 
+A line specifies the ad product to book, quantity, targeting details, and a date range of when the line runs. To add a line to the order, send a POST request to /accounts/{id}/orders/{id}/lines. The body of the request is a Line resource object. Typically, the client should specify the same details on the line that were used to search for product availability.
 
-The response includes the Location header that contains the URI to the new line. The state of the line is Draft. 
+The response includes the Location header that contains the URI to the new line. The state of the line is Draft.
 
 The line may be updated only in the Draft state. To update a line, send a PATCH or PUT request to /accounts/{id}/orders/{id}/lines/{id}. The body of the request is either a full or partial Line resource object depending on whether the publisher supports PUT or PATCH.
 
 ####Uploading a Creative and Assigning It to a Line
 
-To upload a creative, send a POST request to /accounts/{id}/creatives. The body of the request is a Creative resource object. The Creative object specifies the creative’s format, size, language, and the creative itself. 
+To upload a creative, send a POST request to /accounts/{id}/creatives. The body of the request is a Creative resource object. The Creative object specifies the creative’s format, size, language, and the creative itself.
 
 The creative must pass editorial review before it may be assigned to a line. To determine whether the creative passed editorial review, send a GET request to /accounts/{id}/creative/{id}. The response contains a Creative object. The creative passed editorial review if AdQualityStatus is set to Approved.
 
-To assign the creative to a line after it passes editorial review, send a POST request to /accounts/{id}/assignments. The body of the request is an Assignment object. The Assignment object specifies the creative ID and line ID. If you assign more than one creative to a line, the creatives are rotated evenly. To control the rotation, set the optional weight property. 
+To assign the creative to a line after it passes editorial review, send a POST request to /accounts/{id}/assignments. The body of the request is an Assignment object. The Assignment object specifies the creative ID and line ID. If you assign more than one creative to a line, the creatives are rotated evenly. To control the rotation, set the optional weight property.
 Note that a line must have a creative assigned to it before it may be booked.
 
 ####Reserving, Booking, and Canceling a Line
@@ -2844,11 +2846,11 @@ Each call initiates an asynchronous process to perform the work. To determine wh
 
 ####Reporting Clicks and Impressions
 
-See Reporting. 
+See Reporting.
 
 ##Workflow Diagram
 
-The following diagram illustrates the calls required to add an order. The diagram does not include the one time calls to get and cache reference data. 
+The following diagram illustrates the calls required to add an order. The diagram does not include the one time calls to get and cache reference data.
 
 ![Workflow Diagram](/img/OpenDirect_v1_workflow_diagram.gif)
 
@@ -2858,7 +2860,7 @@ The following diagram shows the state changes of a Line resource. For details ab
 
 ![Booking State Diagram](/img/OpenDirect_v1_booking_state_model.jpg)
 
-##Resource Model 
+##Resource Model
 
 The following diagram shows the relationships between the OpenDirect resources. For details about the resource objects, see Resource.
 
