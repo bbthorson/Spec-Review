@@ -39,15 +39,15 @@ For details about the programming elements that this specification defines, see 
 |    |       |
 |----|-------|
 | [Resources](#resources) | Defines the resource objects. For a diagram that shows the resource relationships, see Resource Model. |
-| Common Objects | Defines the objects used by one or more resource. |
-| Reference Data  | Defines the reference data objects and possible values. Reference data provides enumerated values for a resource property. |
-| Collection Objects | Defines the collection objects that GET calls return. |
-| URIs | Defines the URI and supported HTTP verbs for each resource.  |
-| Authentication | Defines the authentication scheme that publisher must use. |
-| Versioning | Defines the versioning scheme that publishers must use. |
-| Error Handling | Defines the error objects that publishers must return for 400 Bad Request. |
-| Reporting | Defines the reporting URIs and objects. |
-| Workflow | Outlines the calls required to create an order. |
+| [Common Objects](#common-objects) | Defines the objects used by one or more resource. |
+| [Reference Data](#reference-data)  | Defines the reference data objects and possible values. Reference data provides enumerated values for a resource property. |
+| [Collection Objects](#collection-objects) | Defines the collection objects that GET calls return. |
+| [URIs](#uris) | Defines the URI and supported HTTP verbs for each resource.  |
+| [Authentication](#authentication) | Defines the authentication scheme that publisher must use. |
+| [Versioning](#versioning) | Defines the versioning scheme that publishers must use. |
+| [Error Handling](#error-handling) | Defines the error objects that publishers must return for 400 Bad Request. |
+| [Reporting](#reporting) | Defines the reporting URIs and objects. |
+| [Workflow](#workflow) | Outlines the calls required to create an order. |
 
 ---
 
@@ -994,7 +994,7 @@ Each request must include an AccessToken header that is set to the user’s acce
 
 Versioning occurs at the API level and is URI based. All services that make up the API must use the same version number. The version may fall anywhere in the path before the resource and must have the form vn, where n is a positive integer. For example, in the URI https://<host>/api/v1/accounts/{id}, v1 indicates version 1 of the API.
 
-##HTTP Error Codes/Error Handling
+##Error Handling
 
 The publisher must support the following HTTP status codes.
 
@@ -1014,7 +1014,7 @@ The API may support the following HTTP status codes.
 | 304 Not modified        | Return for requests that include the If-None-Match header (to support ETags) and the resource has not changed. |
 | 412 Precondition failed | Return for requests that include the If-Match header (to support ETags) and the resource has changed.          |
 
-##Error Response
+###Error Response
 
 If the request generates a 400 Bad Request status code, the response must contain a collection object; the collection object must contain a single field named errors. The value of errors is an array of one or more error objects. The following table defines the properties of the error object.
 
@@ -1046,11 +1046,11 @@ The following shows the body of an example error response.
 }
 ```
 
-##Data Format
+###Data Format
 
 Supported mime type: application/json
 
-##General Request/Response Rules
+###General Request/Response Rules
 
 If the following is true, the response must not include the property.
 
@@ -1063,6 +1063,7 @@ However, if the property is an array of any type and is NULL, the response must 
 All POST (add operations) and PUT/PATCH requests must include the resource in the response.
 
 For POSTs (add operations), ignore properties that are set to NULL. However, for PUT/PATCH, if a property is set to NULL, remove the current value.
+
 
 ##URIs  
 
