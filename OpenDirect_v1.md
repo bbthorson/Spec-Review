@@ -38,7 +38,7 @@ For details about the programming elements that this specification defines, see 
 
 |    |       |
 |----|-------|
-| [Resources](#resources) | Defines the resource objects. For a diagram that shows the resource relationships, see Resource Model. |
+| [Resources](/resources.md) | Defines the resource objects. For a diagram that shows the resource relationships, see Resource Model. |
 | [Common Objects](#common-objects) | Defines the objects used by one or more resource. |
 | [Reference Data](#reference-data)  | Defines the reference data objects and possible values. Reference data provides enumerated values for a resource property. |
 | [Collection Objects](#collection-objects) | Defines the collection objects that GET calls return. |
